@@ -12,7 +12,7 @@ const My_vehicles = () => {
       fetch(`https://rent-a-car-server-livid.vercel.app/my-models?email=${user.email}`)
         .then(res => res.json())
         .then(data => {
-          console.log(data);
+          // console.log(data);
           setModels(data)
           setLoading(false)
         })
