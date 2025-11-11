@@ -18,14 +18,14 @@ const UpdateModel = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:3000/models/${model._id}`, {
+      const res = await fetch(`https://https://rent-a-car-server-livid.vercel.app/models/${model._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(totalVar),
       })
       if (!res.ok) throw new Error('Failed to update')
       // optional: await res.json()
-      navigate('All-vehicle', { replace: true })
+      navigate('/All-vehicle', { replace: true })
     } catch (err) {
         console.error('Error:', err)
             

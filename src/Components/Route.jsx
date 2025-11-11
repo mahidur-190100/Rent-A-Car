@@ -19,34 +19,34 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true, Component: HomePage,
-        loader: () => fetch('http://localhost:3000/latest-models'),
+        loader: () => fetch('https://rent-a-car-server-livid.vercel.app/latest-models'),
       },
       {
-        path: 'All-vehicle',
+        path: '/All-vehicle',
         element: (
           <PrivateRoute>
             <All_vehicle />
           </PrivateRoute>
         ),
-        loader: () => fetch('http://localhost:3000/models'),
+        loader: () => fetch('https://rent-a-car-server-livid.vercel.app/models'),
       },
       {
-        path: 'VehicleDetails/:id',
+        path: '/VehicleDetails/:id',
         
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/models/${params.id}`),
+          fetch(`https://rent-a-car-server-livid.vercel.app/models/${params.id}`),
         element: <VehicleDetails />,
       },
       {
-        path: 'UpdateModel/:id',
+        path: '/UpdateModel/:id',
         Component: UpdateModel,
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/models/${params.id}`),
+          fetch(`https://rent-a-car-server-livid.vercel.app/models/${params.id}`),
       },
 
-      { path: 'Add-vehicle', element: <Add_vehicle /> },
-      { path: 'My-vehicles', element: <My_vehicles /> },
-      { path: 'My-bookings', element: <My_bookings /> },
+      { path: '/Add-vehicle', element: <Add_vehicle /> },
+      { path: '/My-vehicles', element: <My_vehicles /> },
+      { path: '/My-bookings', element: <My_bookings /> },
       { path: '/Login', element: <Login /> },
       { path: '/Register', Component: Register },
     ],

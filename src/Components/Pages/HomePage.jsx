@@ -112,7 +112,7 @@ const HomePage = () => {
               Fast, flexible car rentals—transparent pricing, book in minutes.
               Want to see more cars?
             </p>
-            <NavLink to={"All-vehicle"}>
+            <NavLink to={"/All-vehicle"}>
               <button className="btn btn-primary btn-lg px-8 shadow-lg">
                 All Vehicles
               </button>
@@ -152,7 +152,7 @@ const HomePage = () => {
 
         {data.length > 3 && (
           <div className="text-center mt-8 lg:hidden">
-            <NavLink to={"All-vehicle"}>
+            <NavLink to={"/All-vehicle"}>
               <button className="btn btn-outline btn-primary">
                 View All Vehicles
               </button>

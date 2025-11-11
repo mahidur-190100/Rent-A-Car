@@ -1,172 +1,126 @@
 import React from 'react'
-import { useLoaderData, Link, useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
+import { useLoaderData, useNavigate } from 'react-router-dom'
 
-const VehicleDetails = () => {
+const UpdateModel = () => {
   const data = useLoaderData()
-  const model = data?.result ?? data
+  const model = data.result
   const navigate = useNavigate()
 
-  const {
-    vehicleName,
-    coverImage,
-    description,
-    category,
-    pricePerDay,
-    location,
-    owner,
-    userEmail,
-    createdAt,
-    _id,
-  } = model || {}
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const form = e.currentTarget
 
-  const handleDelete = () => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
-    }).then(async (result) => {
-      if (!result.isConfirmed) return
+    const totalVar = {
+      vehicleName: form.vehicleName.value,
+      category: form.category.value,
+      description: form.description.value,
+      coverImage: form.coverImage.value,
+    }
 
-      try {
-        const res = await fetch(`http://localhost:3000/models/${_id}`, {
-          method: 'DELETE',
-        })
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
-        const data = await res.json()
-        if (!data.success) throw new Error('Delete failed')
-
-        await Swal.fire({
-          title: 'Deleted!',
-          text: 'Your file has been deleted.',
-          icon: 'success',
-        })
-
-        navigate('/All-vehicle')
-      } catch (error) {
-
-        console.error('Error:', error)
-        // Swal.fire('Error', 'Failed to delete. Please try again.', 'error')
-      }
-    })
+    try {
+      const res = await fetch(`https://https://rent-a-car-server-livid.vercel.app/models/${model._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(totalVar),
+      })
+      if (!res.ok) throw new Error('Failed to update')
+      // optional: await res.json()
+      navigate('/All-vehicle', { replace: true })
+    } catch (err) {
+        console.error('Error:', err)
+            
+      // handle error UI here if you want (toast/alert)
+    }
   }
 
-  const placeholderImg = 'https://placehold.co/800x600?text=Vehicle'
-
   return (
-    <div className="max-w-6xl mx-auto p-4 md:p-6 lg:p-8">
-      <div className="card bg-white shadow-xl border border-gray-200 rounded-2xl overflow-hidden">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 md:p-8">
-          {/* Image */}
-          <div className="w-full">
-            <div className="relative w-full h-64 sm:h-80 lg:h-[420px] overflow-hidden rounded-xl shadow-md">
-              <img
-                src={coverImage || placeholderImg}
-                alt={vehicleName || 'Vehicle'}
-                className="absolute inset-0 w-full h-full object-cover"
-                onError={(e) => { e.currentTarget.src = placeholderImg }}
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-              {/* Badges */}
-              <div className="absolute top-3 left-3 flex items-center gap-2">
-                {category && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-black/60 text-white backdrop-blur">
-                    {category}
-                  </span>
-                )}
-              </div>
-              {pricePerDay !== undefined && pricePerDay !== null && pricePerDay !== '' && (
-                <span className="absolute top-3 right-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/90 text-gray-800 shadow">
-                  {pricePerDay}<span className="ml-1 text-[10px] text-gray-500">/day</span>
-                </span>
-              )}
-            </div>
-          </div>
-
-          {/* Details */}
-          <div className="w-full">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
-              {vehicleName}
-            </h1>
-
-            <p className="text-gray-600 leading-relaxed text-base md:text-lg mb-6">
-              {description}
+    <section className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-20 lg:py-28">
+      <div className="w-full max-w-3xl mx-auto px-4 sm:px-6">
+        <div className="card bg-white border border-gray-200 shadow-xl rounded-2xl">
+          <div className="card-body p-6 sm:p-8">
+            <h2 className="text-2xl lg:text-3xl font-bold text-center mb-2 bg-gradient-to-r from-slate-800 via-gray-800 to-zinc-800 bg-clip-text text-transparent">
+              Update Vehicle
+            </h2>
+            <p className="text-center text-gray-500 mb-6">
+              Edit the details and save your changes
             </p>
 
-            {/* Info grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-              {owner && (
-                <div className="rounded-xl border border-gray-200 p-4">
-                  <p className="text-xs uppercase tracking-wide text-gray-500 mb-1">Owner</p>
-                  <p className="text-gray-800 font-medium">{owner}</p>
-                </div>
-              )}
-              {location && (
-                <div className="rounded-xl border border-gray-200 p-4">
-                  <p className="text-xs uppercase tracking-wide text-gray-500 mb-1">Location</p>
-                  <p className="text-gray-800 font-medium">{location}</p>
-                </div>
-              )}
-              {category && (
-                <div className="rounded-xl border border-gray-200 p-4">
-                  <p className="text-xs uppercase tracking-wide text-gray-500 mb-1">Category</p>
-                  <p className="text-gray-800 font-medium">{category}</p>
-                </div>
-              )}
-              {pricePerDay !== undefined && pricePerDay !== null && pricePerDay !== '' && (
-                <div className="rounded-xl border border-gray-200 p-4">
-                  <p className="text-xs uppercase tracking-wide text-gray-500 mb-1">Price Per Day</p>
-                  <p className="text-gray-800 font-medium">{pricePerDay} / day</p>
-                </div>
-              )}
-              {userEmail && (
-                <div className="rounded-xl border border-gray-200 p-4">
-                  <p className="text-xs uppercase tracking-wide text-gray-500 mb-1">Contact Email</p>
-                  <p className="text-gray-800 font-medium break-all">{userEmail}</p>
-                </div>
-              )}
-              {createdAt && (
-                <div className="rounded-xl border border-gray-200 p-4">
-                  <p className="text-xs uppercase tracking-wide text-gray-500 mb-1">Listed On</p>
-                  <p className="text-gray-800 font-medium">
-                    {new Date(createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-              )}
-            </div>
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Vehicle Name */}
+              <div>
+                <label className="label font-medium text-slate-700">Vehicle Name</label>
+                <input
+                  type="text"
+                  name="vehicleName"
+                  defaultValue={model.vehicleName}
+                  required
+                  placeholder="Enter vehicle name"
+                  className="input input-bordered w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-300"
+                />
+              </div>
 
-            {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link
-                to={`/UpdateModel/${_id}`}
-                className="btn w-full sm:w-auto border-0 text-white rounded-full bg-gradient-to-r from-slate-800 via-gray-800 to-zinc-800 hover:from-gray-900 hover:to-zinc-900"
-              >
-                Update
-              </Link>
+              {/* Category */}
+              <div>
+                <label className="label font-medium text-slate-700">Category</label>
+                <select
+                  name="category"
+                  required
+                  defaultValue={model.category}
+                  className="select select-bordered w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-300"
+                >
+                  <option value="" disabled>Select category</option>
+                  <option value="Vehicles">Vehicles</option>
+                  <option value="Plants">Plants</option>
+                  <option value="Foods">Foods</option>
+                  <option value="Home & Living">Home & Living</option>
+                  <option value="Characters">Characters</option>
+                  <option value="Space">Space</option>
+                  <option value="Animals">Animals</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
 
-              <button
-                className="btn w-full sm:w-auto border-0 text-white rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700"
-              >
-                Book
-              </button>
+              {/* Cover Image URL (full width) */}
+              <div className="md:col-span-2">
+                <label className="label font-medium text-slate-700">Cover Image URL</label>
+                <input
+                  type="url"
+                  name="coverImage"
+                  defaultValue={model.coverImage}
+                  required
+                  placeholder="https://example.com/image.jpg"
+                  className="input input-bordered w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-300"
+                />
+              </div>
 
-              <button
-                onClick={handleDelete}
-                className="btn w-full sm:w-auto rounded-full border border-red-300 text-red-600 hover:border-red-500 hover:bg-red-50"
-              >
-                Delete
-              </button>
-            </div>
+              {/* Description (full width) */}
+              <div className="md:col-span-2">
+                <label className="label font-medium text-slate-700">Description</label>
+                <textarea
+                  name="description"
+                  defaultValue={model.description}
+                  required
+                  rows="5"
+                  placeholder="Enter description"
+                  className="textarea textarea-bordered w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-300"
+                />
+              </div>
+
+              {/* Submit */}
+              <div className="md:col-span-2">
+                <button
+                  type="submit"
+                  className="btn w-full text-white rounded-xl border-0 bg-gradient-to-r from-slate-800 via-gray-800 to-zinc-800 hover:from-gray-900 hover:to-zinc-900"
+                >
+                  Update Vehicle
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 
-export default VehicleDetails
+export default UpdateModel
