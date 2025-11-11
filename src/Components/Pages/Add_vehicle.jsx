@@ -40,7 +40,7 @@ const Add_vehicle = () => {
   }
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-20 lg:py-28">
+    <section className="min-h-screen  py-20 lg:py-28">
       <div className="w-full max-w-3xl mx-auto px-4 sm:px-6">
         <div className="card bg-white border border-gray-200 shadow-xl rounded-2xl">
           <div className="card-body p-6 sm:p-8">
