@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 
 const Home = () => {
   return (
-    <div className="min-h-screen flex flex-col  bg-[#D9D9D9]">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="w-11/12 mx-auto flex-1">
         <Outlet />

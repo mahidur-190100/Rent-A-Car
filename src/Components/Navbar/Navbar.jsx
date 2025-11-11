@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { AuthContext } from '../Context/AuthContext'
 import { auth } from '../Firebase/Firebase.config'
@@ -6,19 +6,28 @@ import { signOut } from 'firebase/auth'
 import { toast } from 'react-toastify'
 
 const Navbar = () => {
-  // Expecting AuthProvider to supply user, loading, and optionally logout/setUser
+  // Theme toggle
+  const handleTheme = (checked) => {
+    setTheme(checked ? 'dark' : 'light')
+  }
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light')
+  useEffect(() => {
+
+     const html = document.documentElement // same as querySelector('html')
+     html.setAttribute('data-theme', theme)
+     localStorage.setItem('theme', theme)
+  },[theme])
+
+  // Auth
   const { user, loading, logout, setUser } = useContext(AuthContext) || {}
-  console.log('Navbar user:', user)
+  // console.log('Navbar user:', user)
 
   const handleSignOut = async () => {
     try {
       if (typeof logout === 'function') {
-        // If your context provides a logout method, use it
         await logout()
       } else {
-        // Fallback directly to Firebase
         await signOut(auth)
-        // Force immediate UI update if setUser is available
         if (typeof setUser === 'function') setUser(null)
       }
       toast.success('Signed out successfully')
@@ -143,9 +152,22 @@ const Navbar = () => {
                   </div>
                 </div>
 
+                {/* Theme toggle */}
+                <fieldset className="fieldset bg-base-100 border-base-300 rounded-box mt-2">
+                  <label className="label cursor-pointer justify-between">
+                    <span>Theme</span>
+                    <input
+                      onChange={(e) => handleTheme(e.target.checked)}
+                      type="checkbox"
+                      className="toggle"
+                      defaultChecked={document.documentElement.getAttribute('data-theme') === 'dark'}
+                    />
+                  </label>
+                </fieldset>
+
                 <button
                   onClick={handleSignOut}
-                  className="btn btn-neutral btn-sm mt-2"
+                  className="btn btn-neutral btn-sm mt-3"
                   type="button"
                 >
                   Sign Out
