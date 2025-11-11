@@ -54,7 +54,7 @@ const Login = () => {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <section className="min-h-screen ">
       <div className="hero min-h-screen">
         <div className="hero-content flex-col lg:flex-row-reverse max-w-6xl mx-auto gap-10">
           <div className="text-center lg:text-left">
