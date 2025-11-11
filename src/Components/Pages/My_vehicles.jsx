@@ -9,7 +9,7 @@ const My_vehicles = () => {
 
   useEffect(() => {
     if (user && user.email) {
-      fetch(`https://https://rent-a-car-server-livid.vercel.app/my-models?email=${user.email}`)
+      fetch(`https://rent-a-car-server-livid.vercel.app/my-models?email=${user.email}`)
         .then(res => res.json())
         .then(data => {
           console.log(data);
